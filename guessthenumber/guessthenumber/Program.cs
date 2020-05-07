@@ -1,9 +1,6 @@
 ﻿using System;
 using System.IO;
-using System.Net.Http.Headers;
-using System.Runtime.CompilerServices;
-using System.Threading;
-using System.Threading.Tasks;
+using System.Linq;
 
 namespace guessthenumber
 {
@@ -17,11 +14,9 @@ namespace guessthenumber
             int attempts = 1;
             string folder = @"C:\\GAN";
             string path = @"C:\\GAN\\Highscore.txt";
-            string path2 = @"C:\\GAN\\Highscore2nd.txt";
-            string path3 = @"C:\\GAN\\Highscore3rd.txt";
-            RandomCode(random, guess, attempts, path, path2, path3, folder);
+            RandomCode(random, guess, attempts, path, folder);
         }
-        private static void RandomCode(Random random, int guess, int attempts, string path, string path2, string path3, string folder)
+        private static void RandomCode(Random random, int guess, int attempts, string path, string folder)
         {
             int num = random.Next(1, 100);
 
@@ -55,6 +50,13 @@ namespace guessthenumber
             {
                 System.IO.Directory.CreateDirectory(folder);
                 System.IO.File.AppendAllText(path, score);
+                string[] sortedtext = File.ReadAllLines(path);
+                var orderedEntries = sortedtext.OrderBy(x => int.Parse(x.Split(' ')[1]));
+
+                foreach (var score1 in orderedEntries)
+                {
+                    Console.WriteLine(sortedtext);
+                }
                 return;
             }
 
@@ -62,7 +64,14 @@ namespace guessthenumber
             {
 
                 System.IO.File.AppendAllText(path, score);
-                return;
+                string[] Entry = File.ReadAllLines(path);
+                var orderedEntries = Entry.OrderByDescending(x => int.Parse(x.Split(' ')[1]));
+
+                foreach (var score1 in orderedEntries)
+                {
+                    Console.WriteLine(Entry);
+                }
+
             }
         }
     }
