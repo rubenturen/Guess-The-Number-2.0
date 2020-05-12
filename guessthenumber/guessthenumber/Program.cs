@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace guessthenumber
@@ -44,34 +45,47 @@ namespace guessthenumber
             }
             Console.WriteLine("you guessed the number it took you " + attempts + " attempts");
 
-            var score = Convert.ToString(attempts) + Environment.NewLine;
+            var strscore = Convert.ToString(" " + attempts) + Environment.NewLine;
 
             if (!System.IO.Directory.Exists(folder))
             {
                 System.IO.Directory.CreateDirectory(folder);
-                System.IO.File.AppendAllText(path, score);
-                string[] sortedtext = File.ReadAllLines(path);
-                var orderedEntries = sortedtext.OrderBy(x => int.Parse(x.Split(' ')[1]));
+                System.IO.File.AppendAllText(path, strscore);
+                string[] Entry = File.ReadAllLines(path);
+                var orderedEntries = Entry.OrderBy(x => int.Parse(x.Split(' ')[1]));
+                System.IO.File.WriteAllLines(path, orderedEntries);
 
-                foreach (var score1 in orderedEntries)
-                {
-                    Console.WriteLine(sortedtext);
-                }
+
+
+                Console.WriteLine("Highscores:");
+                StreamReader sr = new StreamReader(path);
+                var line = sr.ReadLine();
+                Console.WriteLine("1st:" + line);
+                line = sr.ReadLine();
+                Console.WriteLine("2nd:" + line);
+                line = sr.ReadLine();
+                Console.WriteLine("3rd:" + line);
+
                 return;
             }
 
             else
             {
-
-                System.IO.File.AppendAllText(path, score);
+                System.IO.File.AppendAllText(path, strscore);
                 string[] Entry = File.ReadAllLines(path);
-                var orderedEntries = Entry.OrderByDescending(x => int.Parse(x.Split(' ')[1]));
+                var orderedEntries = Entry.OrderBy(x => int.Parse(x.Split(' ')[1]));
+                System.IO.File.WriteAllLines(path, orderedEntries);
 
-                foreach (var score1 in orderedEntries)
-                {
-                    Console.WriteLine(Entry);
-                }
+                Console.WriteLine("Highscores:");
+                StreamReader sr = new StreamReader(path);
+                var line = sr.ReadLine();
+                Console.WriteLine("1st:" + line);
+                line = sr.ReadLine();
+                Console.WriteLine("2nd:" + line);
+                line = sr.ReadLine();
+                Console.WriteLine("3rd:" + line);
 
+                return;
             }
         }
     }
